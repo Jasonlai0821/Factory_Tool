@@ -921,8 +921,17 @@
         name="TELEPHONE_STM"
         auto="true"
         enable="true"
-        group="TelePhoneSTM">
+        group="TelePhoneSTM"
+        method="stm">
 	</TestCase>
+
+    <TestCase
+        name="TELEPHONE_VOIP"
+        auto="true"
+        enable="true"
+        group="TelePhoneSTM"
+        method="voip">
+    </TestCase>
 	
 	<TestCase
         name="ETHERNET"
@@ -944,6 +953,13 @@
         enable="true"
         group="AudioInOut">
 	</TestCase>
+
+    <TestCase
+        name="HDMI_OUT"
+        auto="false"
+        enable="true"
+        group="Hdmiout">
+    </TestCase>
 
     <TestCase
         name="TELEPHONE_SIMCARD1"

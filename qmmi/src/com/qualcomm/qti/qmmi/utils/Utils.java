@@ -20,6 +20,9 @@ import com.qualcomm.qti.qmmi.bean.TestCase;
 import com.qualcomm.qti.qmmi.framework.BaseActivity;
 import com.qualcomm.qti.qmmi.framework.BaseService;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -171,6 +174,35 @@ public class Utils {
         screenLock.acquire();
         keepScreenOn(context);
         screenLock.release();
+    }
+
+    public static boolean copyFile(String oldPath, String newPath) {
+        LogUtils.logi("copyFile() oldPath:" + oldPath+" newPath:"+newPath);
+        try {
+            File oldFile = new File(oldPath);
+            if (!oldFile.exists()) {
+                return false;
+            } else if (!oldFile.isFile()) {
+                return false;
+            } else if (!oldFile.canRead()) {
+                return false;
+            }
+
+            FileInputStream fileInputStream = new FileInputStream(oldPath);
+            FileOutputStream fileOutputStream = new FileOutputStream(newPath);
+            byte[] buffer = new byte[1024];
+            int byteRead;
+            while ((byteRead = fileInputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, byteRead);
+            }
+            fileInputStream.close();
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
 

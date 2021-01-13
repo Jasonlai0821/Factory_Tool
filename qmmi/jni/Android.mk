@@ -17,6 +17,23 @@ LOCAL_SHARED_LIBRARIES := \
     liblog
 
 LOCAL_MODULE:= libmmi_jni
-LOCAL_MODULE_TAGS := debug
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDLIBS := -llog
+LOCAL_CFLAGS += -Wall -Werror
+LOCAL_CFLAGS += -Wno-unused-const-variable \
+                                -Wno-null-conversion \
+                                -Wno-unused-variable \
+                                -Wno-unused-parameter \
+                                -Wno-unknown-pragmas \
+                                -Wno-unused-value \
+                                -Wno-macro-redefined \
+                                -Wno-sign-compare \
+                                -Wno-incompatible-pointer-types \
+                                -Wno-pointer-sign \
+                                -Wno-parentheses \
+                                -Wno-unused-function \
+                                -Wno-format \
+                                -Wno-address-of-packed-member \
+                                -Wno-missing-declarations
 
 include $(BUILD_SHARED_LIBRARY)

@@ -6,13 +6,15 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.qualcomm.qti.qmmi"
-    android:versionCode="400"
-    android:versionName="4.0"
+    android:versionCode="500"
+    android:versionName="5.0"
     android:sharedUserId="android.uid.system">
     <uses-sdk
         android:minSdkVersion="23"
         android:targetSdkVersion="26" />
 
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CONNECTIVITY_INTERNAL" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -229,6 +231,12 @@
             android:screenOrientation="landscape"></activity>
 
         <activity
+            android:name=".testcase.Hdmiout.HdmioutActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:screenOrientation="landscape"></activity>
+
+        <activity
             android:name=".testcase.HeadsetKey.HeadsetKeyActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
@@ -334,6 +342,10 @@
             android:exported="false" />
         <service
             android:name="com.qualcomm.qti.qmmi.testcase.AudioInOut.AudioInOutService"
+            android:exported="false" />
+
+        <service
+            android:name="com.qualcomm.qti.qmmi.testcase.Hdmiout.HdmioutService"
             android:exported="false" />
 
         <service

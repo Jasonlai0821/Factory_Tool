@@ -18,27 +18,32 @@ import com.qualcomm.qti.qmmi.utils.LogUtils;
 
 
 public class AudioInOutService extends BaseService{
-    boolean isStarted = false;
+    static boolean isStarted = false;
     TestCase mTestCase = null;
 
     public int onStartCommand(Intent intent, int flags, int startId) {
+        LogUtils.logi("onStartCommand()");
         return super.onStartCommand(intent, flags, startId);
     }
 
 
     @Override
     public void register() {
-
+        LogUtils.logi("register service");
     }
 
     @Override
     public int stop(TestCase testCase) {
-
+        LogUtils.logi("stop service");
+        if(testCase.getThirdState() != null && testCase.getThirdState().equals("stop")){
+            isStarted = false;
+        }
         return 0;
     }
 
     public void UpdateResultInfo(boolean state)
     {
+    	LogUtils.logi("UpdateResultInfo()");
         String result = null;
         StringBuffer sb = new StringBuffer();
         Resources resources = this.getResources();
@@ -47,14 +52,14 @@ public class AudioInOutService extends BaseService{
         }else{
             result = "Success";
         }
-        sb.append(resources.getString(R.string.telephone_stm)).append(result).append("\n");
-        updateView(mTestCase.getName(), sb.toString());
-        mTestCase.addTestData("TelePhoneSTM", result);
+		sb.append("Audio In & Out Test");
+        mTestCase.addTestData("AudioInOut", result);
         if(state == false){
             updateResultForCase(mTestCase.getName(), TestCase.STATE_FAIL);
         }else{
             updateResultForCase(mTestCase.getName(), TestCase.STATE_PASS);
         }
+		 updateView(mTestCase.getName(), sb.toString());
     }
 
     private boolean isPkgInstalled(String pkgName) {
@@ -74,6 +79,7 @@ public class AudioInOutService extends BaseService{
 
     public boolean startSuperRecorder()
     {
+    	LogUtils.logi("startSuperRecorder");
         String packagename = "com.tianxingjian.superrecorder";
         if(isPkgInstalled(packagename) ==false){
             return false;
@@ -94,12 +100,22 @@ public class AudioInOutService extends BaseService{
 
     @Override
     public int run(TestCase testCase) {
-        LogUtils.logi("AudioInOutService service run");
+        LogUtils.logi("AudioInOutService service run isStarted:"+isStarted);
+		mTestCase = testCase;
         if(isStarted == false){
+			mTestCase.setThirdState("start");
             isStarted = startSuperRecorder();
         }else{
 
         }
+
+		UpdateResultInfo(isStarted);
+
+        /*while(isStarted){
+			if(isStarted == false){
+                break;
+            }
+        }*/
 
         return 0;
     }

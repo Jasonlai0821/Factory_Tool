@@ -5,8 +5,15 @@
  */
 package com.qualcomm.qti.qmmi.model;
 
-import com.qualcomm.qti.qmmi.bean.TestCase;
+import android.os.Environment;
 
+import com.qualcomm.qti.qmmi.bean.TestCase;
+import com.qualcomm.qti.qmmi.testcase.SystemInfo.SystemInfoService;
+import com.qualcomm.qti.qmmi.utils.Utils;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ResultThread {
@@ -30,6 +37,10 @@ public class ResultThread {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public String getFilePath() {
+        return this.filePath;
     }
 
     //** flush the result to file
@@ -58,6 +69,26 @@ public class ResultThread {
                         System.out.println("wait notify come to start" + Thread.currentThread().getName());
                         obj.wait();
                         ResultParser.saveResultToFile(filePath, mTestCaseList);
+                        /*if(SystemInfoService.getSerialNO() == null || SystemInfoService.getSerialNO().equalsIgnoreCase("null")){
+                            System.out.println("the devices serial number is null!!!");
+                        }else{
+                            //copy the file to media
+                            Date dt = new Date();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm_E");
+                            String str_time = sdf.format(dt);
+                            String resultpath = null;
+
+                            //String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_NOTIFICATIONS).getPath();
+                            String storageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath() +"/Qmmi";
+                            File testresultFile = new File(storageDirectory);
+                            if (!testresultFile.exists()) {
+                                testresultFile.mkdirs();
+                            }
+                            resultpath = storageDirectory+"/"+SystemInfoService.getSerialNO()+str_time+".xml";
+                            if(filePath != null && resultpath != null){
+                                Utils.copyFile(filePath,resultpath);
+                            }
+                        }*/
                     } catch (Exception exc) {
                         exc.printStackTrace(System.out);
                     }

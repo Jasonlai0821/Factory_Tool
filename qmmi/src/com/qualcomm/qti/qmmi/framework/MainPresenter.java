@@ -104,4 +104,6 @@ public class MainPresenter implements CasesContract.Presenter, CaseManager.TestS
         // TODO Auto-generated method stub
         mCaseManager.startCaseService(context,testCase);
     }
+
+    public CaseManager getCaseManager(){return mCaseManager;}
 }

@@ -14,6 +14,7 @@ import com.qualcomm.qti.qmmi.utils.LogUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlSerializer;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,8 +27,8 @@ public final class ResultParser {
     public static final String FILE_RESULT_UI_XML = "ui_default_res.xml";
     public static final String FILE_RESULT_PCBA_XML = "pcba_default_res.xml";
     public static final String FILE_RESULT_ASSEMBLY_XML = "assembly_default_res.xml";
-    public static final String KEY_PASS = "pass";
-    public static final String KEY_FAIL = "fail";
+    public static final String KEY_PASS = "PASS";
+    public static final String KEY_FAIL = "FAIL";
     public static final String KEY_UNKNOW = "unknow";
 
     public static void readResultFile(String filePathAbs, Map<String, TestCase> testCaseMap) {
@@ -122,9 +123,6 @@ public final class ResultParser {
                     serializer.startTag("", "TestCase");
                     LogUtils.logi("writeResultFile, TestCase , name:" + testCase.getName());
                     serializer.attribute(null, "name", testCase.getName());
-                    serializer.attribute(null, "duration_in_sec", String.valueOf(testCase.getDuration()));
-                    serializer.attribute(null, "end_time", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(testCase.getEndTime()));
-                    serializer.attribute(null, "limit_checked", String.valueOf(testCase.getLimitCheck()));
                     if (testCase.getResult() == TestCase.STATE_PASS)
                         serializer.attribute(null, "result", KEY_PASS);
                     else if (testCase.getResult() == TestCase.STATE_FAIL)
@@ -133,6 +131,9 @@ public final class ResultParser {
                         serializer.attribute(null, "result", KEY_UNKNOW);
 
                     serializer.attribute(null, "start_time", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(testCase.getStartTime()));
+                    serializer.attribute(null, "duration_in_sec", String.valueOf(testCase.getDuration()));
+                    serializer.attribute(null, "end_time", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(testCase.getEndTime()));
+                    serializer.attribute(null, "limit_checked", String.valueOf(testCase.getLimitCheck()));
                     serializer.attribute(null, "token", testCase.getToken() == null ? "11111" : testCase.getToken());
 
                     LogUtils.logi("writeResultFile, TestCase , data size:" + testCase.getTestData().size());

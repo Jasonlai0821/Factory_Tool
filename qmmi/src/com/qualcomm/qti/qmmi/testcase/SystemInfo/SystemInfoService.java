@@ -11,6 +11,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.util.Log;
+
 import com.qualcomm.qti.qmmi.utils.Utils;
 
 import com.qualcomm.qti.qmmi.R;
@@ -28,7 +30,8 @@ import java.net.SocketException;
 
 
 public class SystemInfoService extends BaseService {
-	
+    public static ModemTool modemTool = new ModemTool();
+    public static String mSerialNo = null;
     /**
      * Get IMEI
      */
@@ -60,18 +63,30 @@ public class SystemInfoService extends BaseService {
      * Get SerialNO
      */
 	 
-    private static String getSerialNO() {
-    	ModemTool modemTool = new ModemTool();
+    public static String getSerialNO() {
+        if(mSerialNo != null)
+        {
+            return mSerialNo;
+        }
+
         String result = modemTool.sendAtCommand(NvConstants.REQUEST_SEND_AT_COMMAND,"AT+QCSN?");
 		if(result == null || result.contains("ERROR")){
 			result = null;
-		}else if(result.contains("OK")){
-			String temp = result.substring(result.indexOf("\"")+1,result.length());
-			result = temp.substring(0,temp.indexOf("\""));
-			if(result.equals("")){
-				result = null;
-			}
+		}else if(result.contains("OK") && result.contains("+QCSN:")){
+            Log.d("getSerialNO","result:"+result);
+            if(result != null && result.length() > 22){
+                int pos = result.indexOf("+QCSN: \"");
+                String temp = result.substring(pos+8,pos+23);
+                Log.d("getSerialNO","temp:"+temp);
+                result = temp;
+            }else{
+                result = null;
+            }
 		}
+		if(result != null){
+            mSerialNo = result;
+        }
+
         return result;
     }
 

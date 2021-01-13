@@ -43,6 +43,7 @@ public class TestCase implements Serializable {
     private String mToken;
     private int mLaunchMode;
     private boolean mIsRunning;
+    private String mIsthirdState;
 
     public TestCase() {
         this.mResult = STATE_NONE;
@@ -85,6 +86,10 @@ public class TestCase implements Serializable {
             mTestData.put(stringKey, testCase.getTestData().get(stringKey));
         }
     }
+
+    public String getThirdState(){return mIsthirdState;}
+
+    public void setThirdState(String state){ mIsthirdState = state;}
 
     public String getMethod() {
         return mMethod;

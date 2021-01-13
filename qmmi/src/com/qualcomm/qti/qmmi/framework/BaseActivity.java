@@ -154,6 +154,9 @@ public abstract class BaseActivity extends Activity implements BaseContract.View
 
     public void feedbackResult(int resultId) {
         LogUtils.logi( "feedbackResult,caseName:" + mTestCase.getName() + " status:" + resultId);
+		if(mTestCase.getName().equals("AUDIO_IN_OUT") || mTestCase.getName().equals("TELEPHONE_VOIP")){
+            mTestCase.setThirdState("stop");
+        }
         /***stop case*/
         mPresenter.stopCase(mTestCase);
 

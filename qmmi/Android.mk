@@ -23,6 +23,7 @@ LOCAL_SHARED_LIBRARIES := libqlmodem \
 							libLcdMiniJNI
 
 LOCAL_STATIC_JAVA_LIBRARIES := wigig_manager \
+							   libcommons_net \
                                vendor.qti.hardware.sensorscalibrate-V1.0-java \
                                android.hidl.manager-V1.0-java \
                                android.hardware.light-V2.0-java \
@@ -46,7 +47,12 @@ endif
 
 #LOCAL_JNI_SHARED_LIBRARIES  += libqlmodem
 
-LOCAL_MODULE_TAGS := debug optional
+LOCAL_MODULE_TAGS := optional
 
 LOCAL_PROGUARD_ENABLED := disabled
 include $(BUILD_PACKAGE)
+
+include $(CLEAR_VARS)
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := libcommons_net:jars/commons_net.jar
+include $(BUILD_MULTI_PREBUILT)
+#include $(call all-makefiles-under,$(LOCAL_PATH))

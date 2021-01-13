@@ -94,7 +94,8 @@
 	<string name="ETHERNET">以太网</string>
 	<string name="LCD_MINI">LCD Mini屏</string>
 	<string name="AUDIO_IN_OUT">音频接口</string>
-
+    <string name="HDMI_OUT">HDMI接口</string>
+    <string name="TELEPHONE_VOIP">TELEPHONE VOIP</string>
     <string name="FP_DIGITAL_TEST">数字指纹</string>
     <string name="FP_SENSOR_ID">指纹传感器ID</string>
     <string name="FP_TFT_TEST">指纹TFT</string>
@@ -201,12 +202,18 @@
     <string name="NFC_enabling">正在开启NFC</string>
     <string name="TELEPHONE_call">拨号</string>
 	<string name="telephone_stm">电话模块STM:</string>
+    <string name="telephone_viop">电话通话:</string>
     <string name="TELEPHONE_sim_disable">不能拨号,卡不可用</string>
     <string name="flashlisht_onoff">闪光灯是否已经打开？</string>
     <string name="vibrator_on">手机是否震动？</string>
     <string name="wifi_device_list">设备列表: </string>
     <string name="wifi_level">级别＝</string>
     <string name="wifi_freq">频率＝</string>
+    <string name="ethernet_ipAddress">IP地址:</string>
+    <string name="ethernet_gateWay">网关:</string>
+    <string name="ethernet_maskAddress">子网掩码:</string>
+    <string name="ethernet_dns">DNS:</string>
+    <string name="ethernet_LossRatio">以太网丢包率:</string>
     <string name="systemInfo_version">安卓版本: </string>
     <string name="systemInfo_modem">基带版本: </string>
     <string name="systemInfo_serial">序列号: </string>
@@ -229,6 +236,11 @@
     <string name="sim_slot">SIM卡%1$d</string>
     <string name="sim_deteched">存在</string>
     <string name="sim_not_deteched">不存在</string>
+    <string name="sim_signalstrength">信号强度：</string>
+    <string name="sim_deviceid">设备ID:</string>
+    <string name="sim_telenumber">电话号码:</string>
+    <string name="sim_serialnumber">序列号:</string>
+    <string name="sim_userid">用户ID:</string>
     <string name="sensor_value">返回值</string>
     <string name="memory_info">内存信息: </string>
     <string name="memory_total">总内存: </string>

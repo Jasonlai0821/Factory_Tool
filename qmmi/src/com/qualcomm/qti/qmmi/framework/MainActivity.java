@@ -15,6 +15,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.os.SystemProperties;
 import android.view.LayoutInflater;
@@ -31,10 +32,16 @@ import android.widget.Toast;
 import com.qualcomm.qti.qmmi.R;
 import com.qualcomm.qti.qmmi.bean.TestCase;
 import com.qualcomm.qti.qmmi.service.diag.MmiDiagService;
+import com.qualcomm.qti.qmmi.testcase.SystemInfo.SystemInfoService;
+import com.qualcomm.qti.qmmi.utils.FTPClientUtils;
 import com.qualcomm.qti.qmmi.utils.FileUtils;
 import com.qualcomm.qti.qmmi.utils.LogUtils;
 import com.qualcomm.qti.qmmi.utils.Utils;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import com.qualcomm.qti.qmmi.model.HidlManager;
 
@@ -88,6 +95,7 @@ public class MainActivity extends Activity implements CasesContract.View {
     };
 
     private void updateAutoCaseResult(Intent intent) {
+        LogUtils.logi( "updateAutoCaseResult()");
         Bundle bundle = intent.getExtras();
         int state = bundle.getInt(Utils.BUNDLE_KEY_RESULT);
         String caseName = bundle.getString(Utils.BUNDLE_KEY_CASE_NAME);
@@ -133,14 +141,17 @@ public class MainActivity extends Activity implements CasesContract.View {
         mIntentFilter.addAction(Utils.ACTION_DIAG_START_TESTCAST);
         mIntentFilter.addAction(Utils.ACTION_UPDATE_BACKGROUND_CASE_RESULT);
         registerReceiver(uiUpdateReceiver, mIntentFilter);
+        LogUtils.logi( "onCreate()");
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        LogUtils.logi( "onResume()");
     }
 
     private void restoreRunAllCaseList(){
+        LogUtils.logi( "restoreRunAllCaseList()");
         if ( mAllRunning && mRunAllCaseList == null){
             LogUtils.logi( "Restore RunAll CaseList");
             mRunAllCaseList = mPresenter.getTestCaseList();
@@ -151,21 +162,27 @@ public class MainActivity extends Activity implements CasesContract.View {
     protected void onStop() {
         // TODO Auto-generated method stub
         super.onStop();
+        LogUtils.logi( "onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogUtils.logi( "onDestroy()");
+        SaveResultThread srThread = new SaveResultThread();
+        srThread.start();
         unregisterReceiver(uiUpdateReceiver);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        LogUtils.logi( "onPause()");
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LogUtils.logi( "onActivityResult()");
         LogUtils.logi( "onActivityResult: requestCode :" + requestCode + " resultCode:" + resultCode);
         if (requestCode == REQUEST_RUN_ALL_CASES){
             if (resultCode == RESULT_OK){
@@ -206,6 +223,7 @@ public class MainActivity extends Activity implements CasesContract.View {
     }
 
     private void updateRunAllUI(boolean runAll){
+        LogUtils.logi( "updateRunAllUI()");
         if (runAll){
             mAllRunning = true;
             mCurIndex = 0;
@@ -218,6 +236,7 @@ public class MainActivity extends Activity implements CasesContract.View {
     }
 
     private void runAll() {
+        LogUtils.logi( "runAll()");
         restoreRunAllCaseList();
 
         if ( !checkIfRunning() ){
@@ -247,6 +266,7 @@ public class MainActivity extends Activity implements CasesContract.View {
     }
 
     private void stopAllRunningCases() {
+        LogUtils.logi( "stopAllRunningCases()");
         if ( !mAllRunning ){
             return;
         }
@@ -289,7 +309,7 @@ public class MainActivity extends Activity implements CasesContract.View {
     }
 
     private void handleRunStopAll(){
-
+        LogUtils.logi( "handleRunStopAll()");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.mipmap.ic_launcher);
 
@@ -341,6 +361,7 @@ public class MainActivity extends Activity implements CasesContract.View {
     }
 
     public void onReset(View v) {
+        LogUtils.logi( "onReset()");
         LogUtils.logi( "Reset start");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.mipmap.ic_launcher);
@@ -370,7 +391,10 @@ public class MainActivity extends Activity implements CasesContract.View {
     }
 
     public void onReboot(View v) {
-        LogUtils.logi( "reboot start");
+        LogUtils.logi( "onReboot() reboot start");
+
+        SaveResultThread srThread = new SaveResultThread();
+        srThread.start();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.mipmap.ic_launcher);
@@ -518,7 +542,7 @@ public class MainActivity extends Activity implements CasesContract.View {
 
     @Override
     public void updateResult() {
-        LogUtils.logi("updateResult");
+        LogUtils.logi("updateResult()");
         mListAdapter.notifyDataSetChanged();
     }
 
@@ -655,6 +679,38 @@ public class MainActivity extends Activity implements CasesContract.View {
                 }
             } catch (Exception ex) {
                 LogUtils.loge(ex);
+            }
+        }
+    }
+
+    private class SaveResultThread extends Thread{
+        @Override
+        public void run(){
+            String filePath = mPresenter.getCaseManager().getResultThread().getFilePath();
+            if(SystemInfoService.getSerialNO() == null || SystemInfoService.getSerialNO().equalsIgnoreCase("null")){
+                System.out.println("the devices serial number is null!!!");
+            }else{
+                //copy the file to media
+                Date dt = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("_yyyy-MM-dd_HH:mm");
+                String str_time = sdf.format(dt);
+                String resultpath = null;
+
+                //String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_NOTIFICATIONS).getPath();
+                String storageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath() +"/Qmmi";
+                File testresultFile = new File(storageDirectory);
+                if (!testresultFile.exists()) {
+                    testresultFile.mkdirs();
+                }
+                resultpath = storageDirectory+"/"+SystemInfoService.getSerialNO()+str_time+".xml";
+                if(filePath != null && resultpath != null){
+                    Utils.copyFile(filePath,resultpath);
+                }
+                String descFileName = SystemInfoService.getSerialNO()+str_time+".xml";
+                String desDirectory = SystemInfoService.getSerialNO();
+
+                FTPClientUtils mFTPClientUtils = new FTPClientUtils();
+                mFTPClientUtils.onStartUpload(resultpath,descFileName,desDirectory);
             }
         }
     }

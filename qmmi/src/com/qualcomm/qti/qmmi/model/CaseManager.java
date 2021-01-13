@@ -56,7 +56,7 @@ public class CaseManager implements CaseOpCallback, ControllerInterface {
     private volatile static CaseManager mCaseManager = null;
     private static Context mContext;
     private PackageInfo mPackageInfo;
-    private ResultThread mResultThread;
+    public ResultThread mResultThread;
 
     private CaseManager() {
         super();
@@ -698,4 +698,6 @@ public class CaseManager implements CaseOpCallback, ControllerInterface {
         return 0;
     }
     /*******************ControllerInterface end *******************/
+
+    public ResultThread getResultThread(){return mResultThread;}
 }

@@ -21,9 +21,10 @@
         LCD_MINI,
         AUDIO_IN_OUT,
         LCD,
-        KEY
+        KEY,
+        HDMI_OUT
     </variable>
-
+    <!--TELEPHONE_VOIP-->
     <!--default enable modules for pcba mode -->
     <variable name="basic_pcba_testcases">
         SYSTEM_INFO,

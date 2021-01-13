@@ -106,6 +106,8 @@
 	<string name="ETHERNET">ETHERNET</string>
 	<string name="LCD_MINI">LCD_MINI</string>
 	<string name="AUDIO_IN_OUT">AUDIO_IN_OUT</string>
+    <string name="HDMI_OUT">HDMI Out</string>
+    <string name="TELEPHONE_VOIP">TELEPHONE VOIP</string>
 
     <!-- group name -->
     <string name="Audio">Audio</string>
@@ -201,13 +203,19 @@
     <string name="NFC_null_tag">Tag is Null</string>
     <string name="NFC_enabling">Enabling NFC</string>
     <string name="TELEPHONE_call">Make Call</string>
-	<string name="telephone_stm">TelePhone STM:</string>
+    <string name="telephone_stm">TelePhone STM:</string>
+    <string name="telephone_viop">TelePhone VOIP:</string>
     <string name="TELEPHONE_sim_disable">Sim card is disable</string>
     <string name="flashlisht_onoff">can you see flashlight on?</string>
     <string name="vibrator_on">could you see vibrator on?</string>
     <string name="wifi_device_list">Find device list:</string>
     <string name="wifi_level">Level= </string>
     <string name="wifi_freq">Freq= </string>
+    <string name="ethernet_ipAddress">IP Address:</string>
+    <string name="ethernet_gateWay">GateWay:</string>
+    <string name="ethernet_maskAddress">Mask Address:</string>
+    <string name="ethernet_dns">DNS:</string>
+    <string name="ethernet_LossRatio">Ethernet LossRatio:</string>
     <string name="systemInfo_version">Android Version: </string>
     <string name="systemInfo_modem">Modem: </string>
     <string name="systemInfo_serial">Serial: </string>
@@ -230,6 +238,11 @@
     <string name="sim_slot">SIM%1$d</string>
     <string name="sim_deteched">deteched</string>
     <string name="sim_not_deteched">not deteched</string>
+    <string name="sim_signalstrength">Signal Strength:</string>
+    <string name="sim_deviceid">Device ID:</string>
+    <string name="sim_telenumber">Tele Number:</string>
+    <string name="sim_serialnumber">Serial Number:</string>
+    <string name="sim_userid">User ID:</string>
     <string name="sensor_value">Value</string>
     <string name="memory_info">Memory Info: </string>
     <string name="memory_total">Total Memory: </string>
